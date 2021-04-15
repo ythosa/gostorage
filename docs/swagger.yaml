@@ -1,0 +1,128 @@
+definitions:
+  delivery.APIError:
+    properties:
+      err:
+        type: string
+    type: object
+  dto.File:
+    properties:
+      data:
+        type: string
+      ext:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.FileCredentials:
+    properties:
+      ext:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.FileURL:
+    properties:
+      url:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: API Support
+    url: http://ythosa.github.io
+  description: Simple storage service for files
+  license:
+    name: GNU GENERAL PUBLIC LICENSE v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  title: Gostorage
+  version: "1.0"
+paths:
+  /api/file/delete:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes file on the server and returns error if error
+      parameters:
+      - description: file credentials payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.FileCredentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+      summary: Deletes file
+      tags:
+      - file
+  /api/file/update:
+    patch:
+      consumes:
+      - application/json
+      description: Updates file on the server and returns href to saved file
+      parameters:
+      - description: file payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.File'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.FileURL'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+      summary: Updates file
+      tags:
+      - file
+  /api/file/upload:
+    post:
+      consumes:
+      - application/json
+      description: Saves file on the server and returns href to saved file
+      parameters:
+      - description: file payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.File'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.FileURL'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/delivery.APIError'
+      summary: Upload file
+      tags:
+      - file
+swagger: "2.0"
